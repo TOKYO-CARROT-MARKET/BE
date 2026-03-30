@@ -1,5 +1,5 @@
 class Api::V1::AuthController < ApplicationController
-  before_action :require_authentication, only: [:me, :logout]
+  before_action :require_authentication, only: [ :me, :logout ]
 
   def signup
     user = User.new(signup_params)
