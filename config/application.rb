@@ -18,6 +18,7 @@ module TokyoCarrotMarketBackend
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore,
       key: "_tokyo_carrot_market_session",
-      same_site: :lax
+      same_site: :none,
+      secure: Rails.env.production?
   end
 end
