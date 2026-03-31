@@ -1,24 +1,24 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Auth Logic
+  Next.js
+  │
+  │ 로그인 버튼
+  ▼
+  Rails
+  /auth/google?redirect_path=/my
+  │
+  │ redirect
+  ▼
+  Google Login
+  │
+  │ 인증 성공
+  ▼
+  Rails callback
+  /auth/google/callback
+  │
+  │ user 생성/조회
+  │ session 생성
+  ▼
+  redirect
+  FRONTEND_URL + redirect_path

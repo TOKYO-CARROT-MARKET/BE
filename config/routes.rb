@@ -4,11 +4,14 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :items
+      get "my/items", to: "items#my_items"
 
-      post "signup", to: "auth#signup"
-      post "login", to: "auth#login"
-      delete "logout", to: "auth#logout"
       get "me", to: "auth#me"
+      delete "logout", to: "auth#logout"
     end
   end
+
+  get "/auth/google", to: "oauth#google", as: :google_oauth_start
+  match "/auth/:provider/callback", to: "oauth#google_callback", via: %i[get post]
+  match "/auth/failure", to: "oauth#failure", via: %i[get post]
 end
