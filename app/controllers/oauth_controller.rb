@@ -11,11 +11,11 @@ class OauthController < ApplicationController
     user = User.find_or_create_from_google!(auth: auth.to_h.deep_symbolize_keys)
     session[:user_id] = user.id
 
-    redirect_to "#{frontend_url}#{session.delete(:oauth_redirect_path) || '/'}"
+    redirect_to "#{frontend_url}#{session.delete(:oauth_redirect_path) || '/'}", allow_other_host: true
   end
 
   def failure
-    redirect_to "#{frontend_url}/login?error=oauth_failed"
+    redirect_to "#{frontend_url}/login?error=oauth_failed", allow_other_host: true
   end
 
   private
