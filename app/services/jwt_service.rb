@@ -1,5 +1,4 @@
 class JwtService
-  SECRET = ENV.fetch("JWT_SECRET_KEY")
   ALGORITHM = "HS256"
   ACCESS_EXPIRY = 15.minutes
   REFRESH_EXPIRY = 30.days
@@ -27,14 +26,18 @@ class JwtService
   class << self
     private
 
+    def secret
+      ENV.fetch("JWT_SECRET_KEY")
+    end
+
     def encode(payload, expiry)
       payload = payload.merge(exp: expiry.from_now.to_i)
-      JWT.encode(payload, SECRET, ALGORITHM)
+      JWT.encode(payload, secret, ALGORITHM)
     end
 
     def decode(token)
       return nil unless token
-      decoded = JWT.decode(token, SECRET, true, { algorithm: ALGORITHM })
+      decoded = JWT.decode(token, secret, true, { algorithm: ALGORITHM })
       decoded[0].with_indifferent_access
     rescue JWT::DecodeError
       nil
