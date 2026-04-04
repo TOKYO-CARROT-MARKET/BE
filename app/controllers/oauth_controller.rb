@@ -9,9 +9,11 @@ class OauthController < ApplicationController
     auth = request.env["omniauth.auth"]
 
     user = User.find_or_create_from_google!(auth: auth.to_h.deep_symbolize_keys)
-    session[:user_id] = user.id
+    access_token = JwtService.encode_access({ user_id: user.id })
+    refresh_token = JwtService.encode_refresh({ user_id: user.id })
+    redirect_path = session.delete(:oauth_redirect_path) || "/"
 
-    redirect_to "#{frontend_url}#{session.delete(:oauth_redirect_path) || '/'}", allow_other_host: true
+    redirect_to "#{frontend_url}/auth/callback?access_token=#{access_token}&refresh_token=#{refresh_token}&redirect_path=#{CGI.escape(redirect_path)}", allow_other_host: true
   end
 
   def failure

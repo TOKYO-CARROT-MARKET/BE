@@ -5,8 +5,25 @@ class Api::V1::AuthController < ApplicationController
     render json: user_response(current_user)
   end
 
+  def refresh
+    payload = JwtService.decode_refresh(params[:refresh_token])
+
+    if payload.nil?
+      render json: { error: "Invalid refresh token" }, status: :unauthorized
+      return
+    end
+
+    user = User.find_by(id: payload[:user_id])
+
+    if user.nil?
+      render json: { error: "User not found" }, status: :unauthorized
+      return
+    end
+
+    render json: { access_token: JwtService.encode_access({ user_id: user.id }) }
+  end
+
   def logout
-    reset_session
     head :no_content
   end
 

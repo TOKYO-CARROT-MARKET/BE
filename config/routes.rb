@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get "my/items", to: "items#my_items"
 
       get "me", to: "auth#me"
+      post "auth/refresh", to: "auth#refresh"
       delete "logout", to: "auth#logout"
     end
   end

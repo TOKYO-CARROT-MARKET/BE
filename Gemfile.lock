@@ -408,6 +408,7 @@ DEPENDENCIES
   debug
   dotenv-rails
   image_processing (~> 1.2)
+  jwt
   kamal
   omniauth
   omniauth-google-oauth2
