@@ -23,6 +23,5 @@ module TokyoCarrotMarketBackend
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, session_options
-
   end
 end
