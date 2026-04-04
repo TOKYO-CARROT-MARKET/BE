@@ -15,10 +15,14 @@ module TokyoCarrotMarketBackend
 
     config.api_only = true
 
-    config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore,
+    session_options = {
       key: "_tokyo_carrot_market_session",
-      same_site: :none,
+      same_site: Rails.env.production? ? :none : :lax,
       secure: Rails.env.production?
+    }
+
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, session_options
+
   end
 end
