@@ -62,7 +62,8 @@ class Api::V1::ItemsController < ApplicationController
       :pickup_type,
       :available_from,
       :departure_date,
-      :status
+      :status,
+      images: []
     )
   end
 
@@ -74,7 +75,7 @@ class Api::V1::ItemsController < ApplicationController
       price: item.price,
       category: item.category,
       region: item.region,
-      images: [],
+      images: item.images || [],
       pickup_type: item.pickup_type,
       available_from: item.available_from,
       departure_date: item.departure_date,
