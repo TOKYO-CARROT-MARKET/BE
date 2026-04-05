@@ -1,5 +1,6 @@
 class Item < ApplicationRecord
   belongs_to :user
+  has_many :likes, dependent: :destroy
 
   PICKUP_TYPES = %w[pickup delivery both].freeze
   STATUSES = %w[selling reserved sold].freeze

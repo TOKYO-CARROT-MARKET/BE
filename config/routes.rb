@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :items
+      resources :items do
+        member { post :like }
+      end
       get "my/items", to: "items#my_items"
 
       get "me", to: "auth#me"

@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_04_164515) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "items", force: :cascade do |t|
     t.date "available_from"
@@ -21,6 +22,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_04_164515) do
     t.date "departure_date"
     t.text "description"
     t.text "images", default: [], array: true
+    t.integer "likes_count", default: 0, null: false
     t.string "pickup_type"
     t.integer "price"
     t.string "region"
@@ -28,7 +30,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_04_164515) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.integer "views_count", default: 0, null: false
+    t.index "((((title)::text || ' '::text) || description)) gin_trgm_ops", name: "items_search_trgm_idx", using: :gin
     t.index ["user_id"], name: "index_items_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["item_id"], name: "index_likes_on_item_id"
+    t.index ["user_id", "item_id"], name: "index_likes_on_user_id_and_item_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,4 +62,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_04_164515) do
   end
 
   add_foreign_key "items", "users"
+  add_foreign_key "likes", "items"
+  add_foreign_key "likes", "users"
 end
